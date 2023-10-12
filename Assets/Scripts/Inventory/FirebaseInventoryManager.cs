@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Firebase.Database;
+using Firebase.Database;
+using System.Threading.Tasks;
 
 public class FirebaseInventoryManager : MonoBehaviour
 {
@@ -12,28 +13,53 @@ public class FirebaseInventoryManager : MonoBehaviour
     [SerializeField]
     private InventoryManager _inventoryManager;
 
-    //private DatabaseReference _database;
+    private DatabaseReference _database;
 
-
-    private void Start()
+    private void Awake()
     {
         if (_userID == "")
             _userID = SystemInfo.deviceUniqueIdentifier;
-        //_database = FirebaseDatabase.DefaultInstance.RootReference;
+        _database = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
+    public async void LoadData()
+    {
+        if (_database == null) return;
+
+        var task = await _database.Child("users").Child(_userID).GetValueAsync();
+        if (task != null)
+        {
+            string json = task.GetRawJsonValue();
+
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+
+            _inventoryManager.potionsAmount = playerData.PotionAmount;
+
+            _inventoryManager.UpdatePotionsCount();
+        }
+        //string json = JsonUtility.FromJson<PlayerData>(b.ToString());
     }
 
     [ContextMenu("Test")]
-    private void CreateUser()
+    public void SaveData()
     {
-        Inventory inventory = _inventoryManager.Inventory;
+        PlayerData t = new PlayerData(_inventoryManager.potionsAmount);
 
-        string json = JsonUtility.ToJson(inventory);
-        Debug.Log(json);
+        string json = JsonUtility.ToJson(t);
+        //Debug.Log(json);
+
+        _database.Child("users").Child(_userID).SetRawJsonValueAsync(json);
     }
 
-    private void UpdateUser()
+    [System.Serializable]
+    private class PlayerData
     {
+        public int PotionAmount;
 
+        public PlayerData(int pots)
+        {
+            PotionAmount = pots;
+        }
     }
 
 }

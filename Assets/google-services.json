@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "123077796126",
+    "firebase_url": "https://lecturebackend-bf1f6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "lecturebackend-bf1f6",
+    "storage_bucket": "lecturebackend-bf1f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123077796126:android:a090bde501cc690d3f690f",
+        "android_client_info": {
+          "package_name": "com.kevingames.gametest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGvx9EUMUNkibbnvD_QNnPnL9MFLXvmDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
